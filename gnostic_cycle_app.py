@@ -6,8 +6,8 @@ import streamlit as st
 import plotly.graph_objects as go
 from typing import Optional, Tuple
 
-from machinegnostics.magcal.data_conversion import DataConversion
-from machinegnostics.magcal.characteristics import GnosticsCharacteristics
+from machinegnostics.magcal import DataConversion
+from machinegnostics.magcal import GnosticsCharacteristics
 
 st.set_page_config(page_title="Ideal Gnostic Cycle Explorer [Machine Gnostics]", layout="wide")
 
