@@ -1,0 +1,5 @@
+machinegnostics
+streamlit
+plotly
+pandas
+numpy
