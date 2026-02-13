@@ -208,3 +208,4 @@ st.info("Run: `streamlit run tests/apps/gnostic_cycle_app.py` from the project r
 # author
 st.markdown("---")
 st.markdown("**Author**: Nirmal Parmar, [Machine Gnostics](https://machinegnostics.info)")
+st.markdown("This app is part of the Machine Gnostics project, which aims to provide tools and insights for understanding and improving machine learning models through the lens of gnostic principles. Only for educational and illustrative purposes. For more details, visit the [Machine Gnostics](https://machinegnostics.info) website.")
