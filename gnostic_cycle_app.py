@@ -90,17 +90,8 @@ st.markdown("Explore bi-geometric movement of a datum across fidelity (fi) and i
 
 with st.sidebar:
     st.header("Data Input")
-    mode = st.radio("Choose input mode", ["Type", "Sample", "Upload"], index=0)
-    uploaded = None
-    sample_kind = None
-    typed = None
-    if mode == "Upload":
-        uploaded = st.file_uploader("Upload CSV with one numeric column", type=["csv"]) 
-        col_name = st.text_input("Column name (for uploaded CSV)", value="value")
-    elif mode == "Sample":
-        sample_kind = st.selectbox("Sample dataset", ["Synthetic bimodal", "Linear + noise", "Random uniform"], index=0)
-    else:
-        typed = st.text_area("Observed Z values (comma or newline)", value="11, 12, 13, 14, 15", height=80)
+    # Input mode simplified to 'Type' only
+    typed = st.text_area("Observed Z values (comma or newline)", value="11, 12, 13, 14, 15", height=80)
 
     st.header("Parameters")
     data_form = st.selectbox("Data form", ["a", "m"], index=0, help="'a' additive, 'm' multiplicative")
@@ -121,34 +112,11 @@ with st.sidebar:
     k_show = st.slider("Samples to show (multiple)", 1, 20, 5, 1)
     plot_height = st.slider("Movement plot height", 300, 900, 540, 30, help="Controls the height of Quantification/Estimation visuals")
 
-# --- Data preparation ---
-if mode == "Upload" and uploaded is not None:
-    try:
-        df = pd.read_csv(uploaded)
-        if col_name not in df.columns:
-            st.error(f"Column '{col_name}' not found in uploaded file.")
-            st.stop()
-        data = df[col_name].dropna().to_numpy()
-    except Exception as e:
-        st.error(f"Failed to read CSV: {e}")
-        st.stop()
-elif mode == "Sample":
-    rng = np.random.default_rng(7)
-    if sample_kind == "Synthetic bimodal":
-        a = rng.normal(loc=8.5, scale=0.8, size=200)
-        b = rng.normal(loc=12.0, scale=1.0, size=200)
-        data = np.concatenate([a, b])
-    elif sample_kind == "Linear + noise":
-        x = rng.uniform(5, 15, 400)
-        y = 0.6 * x + rng.normal(0, 0.8, 400)
-        data = y
-    else:  # Random uniform
-        data = rng.uniform(5.0, 15.0, 400)
-else:
-    data = _parse_values(typed)
-    if data.size == 0:
-        st.warning("No observed values parsed. Using defaults: 11, 12, 13, 14, 15")
-        data = np.array([11.0, 12.0, 13.0, 14.0, 15.0], dtype=float)
+# --- Data preparation (Type input only) ---
+data = _parse_values(typed)
+if data.size == 0:
+    st.warning("No observed values parsed. Using defaults: 11, 12, 13, 14, 15")
+    data = np.array([11.0, 12.0, 13.0, 14.0, 15.0], dtype=float)
 
 if auto_bounds:
     DL = float(np.min(np.concatenate([data.reshape(-1), np.array([Z0])])))
